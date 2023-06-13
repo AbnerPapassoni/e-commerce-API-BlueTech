@@ -9,7 +9,7 @@ const addProduct = {
 }
 
 const removeProduct = {
-    body: Object({
+    body: object({
         userEmail: string().email().required(),
         productId: number().required(),
     }).defined(),

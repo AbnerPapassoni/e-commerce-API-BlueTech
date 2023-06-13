@@ -13,6 +13,16 @@ export default class productController {
 		}
 	}
 
+    static async listProductsByPage(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params;
+            const products = await Product.fetchProductsByPage(Number(id));
+            return res.status(200).json(products);
+        } catch (error) {
+            next(error);
+        }
+    }
+
     static async fetchProductById(req: Request, res: Response, next: NextFunction) {
         try {
             const { id } = req.params;
@@ -59,7 +69,7 @@ export default class productController {
     static async deleteProduct(req: Request, res: Response, next: NextFunction) {
         try {
             const { id } = req.params;
-            await Product.deleteProduct(parseInt(id));
+            await Product.deleteProduct(Number(id));
             return res.sendStatus(204)
         } catch (error) {
             next(error)

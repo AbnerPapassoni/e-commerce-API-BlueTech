@@ -1,26 +1,25 @@
 import { prisma } from "../database/db";
 import apiError from "../utils/api/apiError";
+import deleteImage from "../utils/deleteImage";
 
-export default class Product {
+export default class ProductRepository {
     static async fetchProducts() {
         return await prisma.product.findMany({
-            select: {
-                name: true,
-                description: true,
-                price: true,
-                inventory:true,
-                images: {
-                    take: 1,
-                    select: {
-                        link: true,
-                    }
-                },
-                categories: {
-                    select: {
-                        name: true,
-                    }
-                },
-            },
+            include: { categories: true, images: true },
+        });
+    }
+
+    static async searchProduct(keyWord: string) {
+        return await prisma.product.findMany({
+            where: { name: { contains: keyWord } },
+            include: { categories: true, images: true },
+        });
+    }
+
+    static async fetchByCategory(category: string | Array<string>) {
+        return await prisma.category.findMany({
+            where: { name: { in: category } },
+            include: { products: { include: { categories: true, images: true } } }
         });
     }
 
@@ -35,7 +34,7 @@ export default class Product {
                 name: true,
                 description: true,
                 price: true,
-                inventory:true,
+                inventory: true,
                 images: {
                     take: 1,
                     select: {
@@ -56,7 +55,7 @@ export default class Product {
             where: { id },
             select: {
                 name: true,
-                description:true,
+                description: true,
                 price: true,
                 inventory: true,
                 images: {
@@ -77,28 +76,38 @@ export default class Product {
         name,
         description,
         price,
-        inventory
+        inventory,
+        categories,
+        images,
     }: {
         name: string;
         description: string;
         price: number;
         inventory: number;
+        categories?: Array<string>;
+        images?: Array<string>;
     }) {
-        const product = await prisma.product.create({
+        return await prisma.product.create({
             data: {
                 name,
                 description,
                 price,
-                inventory
-            }
+                inventory,
+                categories: {
+                    connectOrCreate: categories?.map((category) => {
+                        return {
+                            where: { name: category },
+                            create: { name: category },
+                        };
+                    }),
+                },
+                images: {
+                    create: images?.map((image) => {
+                        return { link: image };
+                    }),
+                },
+            },
         });
-
-        return {
-            name: product.name,
-            description: product.description,
-            price: product.price,
-            inventory: product.inventory
-        }
     }
 
     static async updateProduct({
@@ -106,38 +115,77 @@ export default class Product {
         name,
         description,
         price,
-        inventory
+        inventory,
+        categories,
+        images,
 
     }: {
         id: number,
         name?: string;
         description?: string;
         price?: number;
-        inventory?: number
+        inventory?: number;
+        categories?: Array<string>;
+        images?: Array<string>;
     }) {
-        const product = await prisma.product.update({
+        return await prisma.product.update({
             where: { id },
             data: {
                 name,
                 description,
                 price,
-                inventory
-            }
-        })
+                inventory,
+                categories: {
+                    connectOrCreate: categories?.map((category) => {
+                        return {
+                            where: { name: category },
+                            create: { name: category },
+                        };
+                    }),
 
-        return {
-            name: product.name,
-            description: product.description,
-            price: product.price,
-            inventory: product.inventory
-        }
+                },
+                images: {
+                    create: images?.map((image) => {
+                        return {link: image};
+                    }),
+                },
+            },
+        });       
     }
-    
+
     static async deleteProduct(id: number) {
-            const product = await prisma.product.delete({
-                where: { id },
+        const deleteOrders = prisma.productOrder.deleteMany({
+            where: {productId: id},
+        });
+
+        const deleteImages = prisma.productImage.deleteMany({
+            where: {productId: id},
+        });
+        const deleteProduct = prisma.product.delete({
+            where: { id }
+        });
+        await prisma.$transaction([deleteOrders, deleteProduct, deleteImages]);
+    }
+
+    static async newImage(productId: number, images: string[]) {
+        return await prisma.productImage.createMany({
+            data: images.map((image) => {
+                return {link: image, productId};
+            }),
+        });
+    }
+    static async deleteImage(id: number) {
+        return await prisma.$transaction(async (tx) => {
+            const image = await tx.productImage.findUnique({
+                where: {id},
+                select: {link: true},
             });
-            if (!product) throw new apiError(404, "Produto não encontrado.");
+            if (!image) throw new apiError(404, "Image not found!");
+            await deleteImage(image.link);
+            return await tx.productImage.delete({
+                where: {id},
+            });
+        });
     }
 
 }

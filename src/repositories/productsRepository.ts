@@ -74,41 +74,41 @@ export default class ProductRepository {
 
     static async createProduct({
         name,
-        description,
         price,
+        description,
         inventory,
         categories,
         images,
-    }: {
+      }: {
         name: string;
-        description: string;
         price: number;
+        description: string;
         inventory: number;
         categories?: Array<string>;
         images?: Array<string>;
-    }) {
+      }) {
         return await prisma.product.create({
-            data: {
-                name,
-                description,
-                price,
-                inventory,
-                categories: {
-                    connectOrCreate: categories?.map((category) => {
-                        return {
-                            where: { name: category },
-                            create: { name: category },
-                        };
-                    }),
-                },
-                images: {
-                    create: images?.map((image) => {
-                        return { link: image };
-                    }),
-                },
+          data: {
+            name,
+            price,
+            description,
+            inventory,
+            categories: {
+              connectOrCreate: categories?.map((category) => {
+                return {
+                  where: { name: category },
+                  create: { name: category },
+                };
+              }),
             },
+            images: {
+              create: images?.map((image) => {
+                return { link: image };
+              }),
+            },
+          },
         });
-    }
+      }
 
     static async updateProduct({
         id,

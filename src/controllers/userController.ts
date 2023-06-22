@@ -8,7 +8,6 @@ import bcrypt from "bcrypt";
 export default class userController {
     
     static async login(req: Request, res: Response, next: NextFunction) {
-        res.header('Access-Control-Allow-Origin','*')
         try {
             const { email, password } = req.body
             const user = await User.fetchUserEmail(email, true);

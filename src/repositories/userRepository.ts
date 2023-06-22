@@ -1,14 +1,6 @@
 import { prisma } from "../database/db";
-import express from 'express';
 import bcrypt from 'bcrypt';
 import apiError from "../utils/api/apiError";
-
-
-const app = express();
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    next();
-  });
 
 
 export default class User {

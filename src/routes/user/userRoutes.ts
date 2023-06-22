@@ -9,7 +9,7 @@ const userRoutes = Router();
 
 userRoutes.get("/user", Authentication.authAdmin, userController.index); //ok
 userRoutes.post("/user", validateDto(userSchema.createUser), userController.createUserClient); //ok
-userRoutes.post("/admin", Authentication.authAdmin, validateDto(userSchema.createUser), userController.createUserAdmin); //ok
+userRoutes.post("/user/admin", Authentication.authAdmin, validateDto(userSchema.createUser), userController.createUserAdmin); //ok
 userRoutes.post("/user/login", validateDto(userSchema.login), userController.login); //ok
 userRoutes.get("/user/logout", userController.logout); //ok
 userRoutes.get("/user/:email", Authentication.authClient, Authentication.validateUserRole, userController.fetchByEmail); //ok

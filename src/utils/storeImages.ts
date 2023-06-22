@@ -15,7 +15,9 @@ export default function storeImages(files: Array<Express.Multer.File>) {
       throw error;
     });
     blobStream.on("finish", () => {
-      const publicUrl = format(`https://storage.googleapis.com/${bucket.name}/${blob.name}`);
+      const publicUrl = format(
+        `https://storage.googleapis.com/${bucket.name}/${blob.name}`,
+      );
       images.push(publicUrl);
     });
     blobStream.end(image.buffer);

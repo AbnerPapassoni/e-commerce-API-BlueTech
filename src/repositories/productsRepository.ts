@@ -23,54 +23,54 @@ export default class ProductRepository {
         });
     }
 
-    static async fetchProductsByPage(id: number) {
-        const cursor = (id - 1) * 10 + 1;
-        return await prisma.product.findMany({
-            take: 10,
-            cursor: {
-                id: cursor
-            },
-            select: {
-                name: true,
-                description: true,
-                price: true,
-                inventory: true,
-                images: {
-                    take: 1,
-                    select: {
-                        link: true,
-                    }
-                },
-                categories: {
-                    select: {
-                        name: true,
-                    }
-                },
-            },
-        });
-    }
+    // static async fetchProductsByPage(id: number) {
+    //     const cursor = (id - 1) * 10 + 1;
+    //     return await prisma.product.findMany({
+    //         take: 10,
+    //         cursor: {
+    //             id: cursor
+    //         },
+    //         select: {
+    //             name: true,
+    //             description: true,
+    //             price: true,
+    //             inventory: true,
+    //             images: {
+    //                 take: 1,
+    //                 select: {
+    //                     filename: true,
+    //                 }
+    //             },
+    //             categories: {
+    //                 select: {
+    //                     name: true,
+    //                 }
+    //             },
+    //         },
+    //     });
+    // }
 
-    static async fetchProductId(id: number) {
-        return await prisma.product.findUnique({
-            where: { id },
-            select: {
-                name: true,
-                description: true,
-                price: true,
-                inventory: true,
-                images: {
-                    select: {
-                        link: true,
-                    }
-                },
-                categories: {
-                    select: {
-                        name: true,
-                    }
-                },
-            },
-        });
-    }
+    // static async fetchProductId(id: number) {
+    //     return await prisma.product.findUnique({
+    //         where: { id },
+    //         select: {
+    //             name: true,
+    //             description: true,
+    //             price: true,
+    //             inventory: true,
+    //             images: {
+    //                 select: {
+    //                     filename: true,
+    //                 }
+    //             },
+    //             categories: {
+    //                 select: {
+    //                     name: true,
+    //                 }
+    //             },
+    //         },
+    //     });
+    // }
 
     static async createProduct({
         name,
@@ -103,7 +103,7 @@ export default class ProductRepository {
             },
             images: {
               create: images?.map((image) => {
-                return { link: image };
+                return { filename: image };
               }),
             },
           },
@@ -146,7 +146,7 @@ export default class ProductRepository {
                 },
                 images: {
                     create: images?.map((image) => {
-                        return {link: image};
+                        return {filename: image};
                     }),
                 },
             },
@@ -170,7 +170,7 @@ export default class ProductRepository {
     static async newImage(productId: number, images: string[]) {
         return await prisma.productImage.createMany({
             data: images.map((image) => {
-                return {link: image, productId};
+                return {filename: image, productId};
             }),
         });
     }
@@ -178,10 +178,10 @@ export default class ProductRepository {
         return await prisma.$transaction(async (tx) => {
             const image = await tx.productImage.findUnique({
                 where: {id},
-                select: {link: true},
+                select: {filename: true},
             });
             if (!image) throw new apiError(404, "Image not found!");
-            await deleteImage(image.link);
+            await deleteImage(image.filename);
             return await tx.productImage.delete({
                 where: {id},
             });

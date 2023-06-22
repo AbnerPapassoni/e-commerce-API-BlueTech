@@ -36,26 +36,26 @@ export default class productController {
         }
     }
 
-    static async listProductsByPage(req: Request, res: Response, next: NextFunction) {
-        try {
-            const { id } = req.params;
-            const products = await Product.fetchProductsByPage(Number(id));
-            return res.status(200).json(products);
-        } catch (error) {
-            next(error);
-        }
-    }
+    // static async listProductsByPage(req: Request, res: Response, next: NextFunction) {
+    //     try {
+    //         const { id } = req.params;
+    //         const products = await Product.fetchProductsByPage(Number(id));
+    //         return res.status(200).json(products);
+    //     } catch (error) {
+    //         next(error);
+    //     }
+    // }
 
-    static async fetchProductById(req: Request, res: Response, next: NextFunction) {
-        try {
-            const { id } = req.params;
-            const product = await Product.fetchProductId(Number(id));
-            if (!product) { throw new apiError(404, "🔎 Product not found for this ID.") };
-            return res.status(200).json(product);
-        } catch (error) {
-            next(error);
-        }
-    }
+    // static async fetchProductById(req: Request, res: Response, next: NextFunction) {
+    //     try {
+    //         const { id } = req.params;
+    //         const product = await Product.fetchProductId(Number(id));
+    //         if (!product) { throw new apiError(404, "🔎 Product not found for this ID.") };
+    //         return res.status(200).json(product);
+    //     } catch (error) {
+    //         next(error);
+    //     }
+    // }
 
     static async createProduct(req: Request, res: Response, next: NextFunction) {
         try {

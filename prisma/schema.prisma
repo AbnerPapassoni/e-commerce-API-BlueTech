@@ -88,7 +88,7 @@ model Category {
 
 model ProductImage {
   id        Int     @id @default(autoincrement())
-  link      String  @unique
+  filename      String  @unique
   product   Product @relation(fields: [productId], references: [id])
   productId Int
 

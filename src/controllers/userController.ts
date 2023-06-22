@@ -1,8 +1,15 @@
 import { NextFunction, Response, Request } from "express";
+import express from 'express';
 import User from "../repositories/userRepository";
 import apiError from "../utils/api/apiError";
 import jwtk from "../utils/jwt";
 import bcrypt from "bcrypt";
+
+const app = express();
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    next();
+  });
 
 
 export default class userController {

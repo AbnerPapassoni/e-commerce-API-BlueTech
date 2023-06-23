@@ -32,3 +32,4 @@
 <img src="https://drive.google.com/file/d/1_h128YtJdZ3dCNtWr0xN7oltjqrVn87s/view?usp=drive_link" height="40" width="52" alt=""  /><img> 
 
 
+[![Run in Insomnia}](https://insomnia.rest/images/run.svg)](https://insomnia.rest/run/?label=Blue_tech&uri=https%3A%2F%2Fraw.githubusercontent.com%2FGandara247%2Fe-commerce-API-BlueTech%2Fmain%2Fdocs%2Fexport.json)

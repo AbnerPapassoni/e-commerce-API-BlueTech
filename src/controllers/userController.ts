@@ -12,7 +12,7 @@ export default class userController {
             const { email, password } = req.body
             const user = await User.fetchUserEmail(email, true);
             if (!user) throw new apiError(404, "🔎User not found!");
-            if (!bcrypt.compare(password, user.password)) {
+            if (!bcrypt.compareSync(password, user.password)) {
                 throw new apiError(400, "🛑 Invalid data!");
             }
             const token = jwtk.createToken({

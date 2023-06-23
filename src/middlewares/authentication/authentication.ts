@@ -22,6 +22,8 @@ export default class Authentication {
                 throw new apiError(403, "Exclusive access for administrators.");
             }
             next()
+            return res.json({name: user.name, email: user.email, role: user.role})
+            
         } catch (error) {
             next(error);
         }
@@ -52,7 +54,7 @@ export default class Authentication {
                     secure: true,
                 });
 
-                    return user.name, user.email; 
+                    return user
             } else {
                 throw error;
             }

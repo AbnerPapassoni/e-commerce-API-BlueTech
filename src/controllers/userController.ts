@@ -33,7 +33,7 @@ export default class userController {
                 sameSite: "none",
                 secure: true,
             });
-            return res.sendStatus(200).json({name: user.name, email: user.email, role: user.role});
+            return res.sendStatus(200).jsonp({name: user.name, email: user.email, role: user.role});
 
         } catch (error) {
             next(error);

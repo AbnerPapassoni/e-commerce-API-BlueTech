@@ -29,7 +29,22 @@
 <!-------te------>
 
 
-<img src="https://drive.google.com/file/d/1_h128YtJdZ3dCNtWr0xN7oltjqrVn87s/view?usp=drive_link" height="40" width="52" alt=""  /><img> 
+
+
+<a href="https://github.com/r-f-s-neto/bluetech">
+    <img src="./images/forReadme/front_rep.svg" alt="Documentação API" width="300" height="" >
+</a>
+
+<a href="https://github.com/r-f-s-neto/bluetech">
+    <img src="./images/forReadme/site_blue_tech.svg" alt="Documentação API" width="300" height="" >
+</a>
+
+<a href="https://gandara247.github.io/e-commerce-API-BlueTech/">
+    <img src="./images/forReadme/api_doc.svg" alt="Documentação API" width="300" height="">
+</a>
+
+
+
 
 
 [![Run in Insomnia}](https://insomnia.rest/images/run.svg)](https://insomnia.rest/run/?label=Blue_tech&uri=https%3A%2F%2Fraw.githubusercontent.com%2FGandara247%2Fe-commerce-API-BlueTech%2Fmain%2Fdocs%2Fexport.json)

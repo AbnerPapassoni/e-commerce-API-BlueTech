@@ -52,7 +52,7 @@ export default class Authentication {
                     secure: true,
                 });
 
-                return user;
+                    return user.name, user.email, user.role; 
             } else {
                 throw error;
             }

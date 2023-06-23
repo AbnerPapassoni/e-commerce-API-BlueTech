@@ -1,4 +1,4 @@
-import { NextFunction, Response, Request } from "express";
+import { NextFunction, Response, Request, json } from "express";
 import User from "../repositories/userRepository";
 import apiError from "../utils/api/apiError";
 import jwtk from "../utils/jwt";
@@ -33,7 +33,8 @@ export default class userController {
                 sameSite: "none",
                 secure: true,
             });
-            return res.sendStatus(200).jsonp({name: user.name, email: user.email, role: user.role});
+            return res.sendStatus(200)
+            
 
         } catch (error) {
             next(error);

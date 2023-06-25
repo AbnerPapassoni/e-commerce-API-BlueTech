@@ -1,3 +1,7 @@
+![GifBlueTechAPI](https://github.com/Gandara247/e-commerce-API-BlueTech/assets/120376565/8e578b87-7434-460f-a8f1-b5918a5588ce)
+
+
+
 # <p align="center"> PROJETO FINAL GAMA ACADEMY </p></br>
 
 # <p align="center"> E-commerce Blue_Tech Eletrônicos </p></br>
